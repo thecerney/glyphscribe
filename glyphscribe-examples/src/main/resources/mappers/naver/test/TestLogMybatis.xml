@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    API 사용/처리 내역 기록
+
+    Modification Information
+      수정일         수정자            수정내용
+    ==========     =======      =================
+     2025-06-25      손석인       최초 생성
+-->
+<mapper namespace="com.example.demo.mybatis.LogTestMybatis">
+    <select id="retrieveTestQuery">
+        select /* 이거슨 주석 테스트 입니다. */
+            *
+        from AL_ALML_API_INF
+        where 1=1
+          and ALML_CD = #{almlCd}
+    </select>
+</mapper>

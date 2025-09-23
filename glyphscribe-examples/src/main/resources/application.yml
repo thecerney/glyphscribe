@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:demo;MODE=Oracle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  sql:
+    init:
+      mode: always
+  h2:
+    console:
+      enabled: true
+
+mybatis:
+  mapper-locations: classpath*:mappers/**/*.xml
+  # type-aliases-package: com.example.demo.domain  # 필요 시
+
+# Glyphscribe: 주석 패턴 설정(기본값이 /*|*/ 와 <!--|--> 이므로 사실 생략해도 됨)
+glyphscribe:
+  format:
+    enable-auto-logging: true
+    show-start-time: true
+    show-elapsed-time: true
+    show-sql-id: true
+    show-raw-sql: false
+    show-assembled-sql: false
+    show-executed-sql: true
+    show-params: false
+    show-comment: true
+    show-separator: true
+    insert-comment-into-sql: true
+    timestamp-format: "yyyy-MM-dd HH:mm:ss.SSS"
+    separator: "==========================================================================="
+  bridge:
+    inject-interceptor: true
+    comment-patterns:
+      - "/*|*/"
+      - "<!--|-->"
+
+# MDC에 coreKey(glyphKey) 보이도록
+logging:
+  pattern:
+    level: "%5p [%X{glyphKey}]"
