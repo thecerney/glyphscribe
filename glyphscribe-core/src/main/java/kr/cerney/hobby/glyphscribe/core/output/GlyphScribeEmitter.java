@@ -28,7 +28,7 @@ public final class GlyphScribeEmitter implements LogPrinter {
 
     private GlyphScribeEmitter() {
         this.archive = LogArchive.getInstance();
-        this.defaultFormatter = new DefaultFormatter(new FormatterConfig()); // fallback
+        this.defaultFormatter = new DefaultFormatter(new FormatterConfig());
     }
 
     public static GlyphScribeEmitter getInstance() {
@@ -85,9 +85,9 @@ public final class GlyphScribeEmitter implements LogPrinter {
             return "[GlyphScribeLogger] IdMapper is not initialized. Call setIdMapper(...) first.";
         }
         if (bridgeId == null || bridgeId.isBlank()) {
-            return "[GlyphScribeLogger] Invalid bridgeId: null or blank";
+            return "[GlyphScribeLogger] Invalid bridgeId";
         }
-        String key = idMapper.getLatestKey(bridgeId).orElse(null); // 숏ID/풀ID 모두 허용한다면 getLatestKey 사용
+        String key = idMapper.getLatestKey(bridgeId).orElse(null);
         if (key == null) {
             return "[GlyphScribeLogger] No recent execution for bridgeId: " + bridgeId;
         }
@@ -95,7 +95,7 @@ public final class GlyphScribeEmitter implements LogPrinter {
     }
 
     @Override
-    public String print(String bridgeId) {
-        return System.lineSeparator() + printLatest(bridgeId) + System.lineSeparator();
+    public String query(String bridgeId) {
+        return printLatest(bridgeId) + System.lineSeparator();
     }
 }

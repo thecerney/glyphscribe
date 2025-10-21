@@ -16,23 +16,37 @@ mybatis:
   # type-aliases-package: com.example.demo.domain  # 필요 시
 
 # Glyphscribe: 주석 패턴 설정(기본값이 /*|*/ 와 <!--|--> 이므로 사실 생략해도 됨)
+# --- Glyphscribe 포맷/출력 ---
 glyphscribe:
   format:
+    # 쿼리 실행 직후 자동 로그 출력
     enable-auto-logging: true
+    auto-log-base-package:
+      - kr.cerney.hobby
+
+    # 헤더/기본 포맷
+    show-separator: true
+    separator: "=========================================================================="
+    show-sql-id: true
     show-start-time: true
     show-elapsed-time: true
-    show-sql-id: true
-    show-raw-sql: false
-    show-assembled-sql: false
-    show-executed-sql: true
-    show-params: false
+
+    # SQL 본문 출력 정책
     show-comment: true
-    show-separator: true
-    insert-comment-into-sql: true
+    insert-comment-into-sql: true   # 실행SQL 첫 키워드 뒤에 원본 주석 삽입
+    show-raw-sql: false             # 원본(정적) SQL 블럭 출력
+    show-assembled-sql: false       # 동적치환/어셈블리 SQL 블럭 출력
+    show-executed-sql: true         # 실행 SQL 블럭 출력
+
+    # 파라미터 블록은 미표시 (실행 SQL에 바인딩 값이 들어가므로)
+    show-params: false
+
+    # 시간 포맷
     timestamp-format: "yyyy-MM-dd HH:mm:ss.SSS"
-    separator: "==========================================================================="
+
   bridge:
-    inject-interceptor: true
+
+    # 원본 주석 추출 규칙 (없으면 기본 /*…*/, <!--…--> 사용)
     comment-patterns:
       - "/*|*/"
       - "<!--|-->"
@@ -41,3 +55,6 @@ glyphscribe:
 logging:
   pattern:
     level: "%5p [%X{glyphKey}]"
+  level:
+    kr.cerney.hobby.glyphscribe: INFO
+    kr.cerney.hobby.glyphscribe.bridge: INFO

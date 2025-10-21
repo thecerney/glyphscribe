@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 2025.08.07
  */
 public final class InMemorySqlTemplateRegistry implements SqlTemplateRegistry {
-
     private final Map<String, SqlTemplate> store = new ConcurrentHashMap<>();
 
     @Override

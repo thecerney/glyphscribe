@@ -42,7 +42,7 @@ public final class BridgeSettingsResolver {
     }
 
     /**
-     * 인덱스 기반 목록을 우선 읽고, 값이 없으면 단일 프로퍼티(줄바꿈/쉼표 구분)로 읽습니다.
+     * 인덱스 기반 목록을 우선 읽고, 값이 없으면 단일 프로퍼티 (줄바꿈/쉼표 구분)로 수집
      */
     private static List<String> readCommentPatternSpecs(Environment env) {
         List<String> specs = (env == null) ? List.of() : readIndexedProperties(env, COMMENT_PATTERNS_KEY);
@@ -50,7 +50,7 @@ public final class BridgeSettingsResolver {
     }
 
     /**
-     * key[0], key[1], ... 연속 구간을 수집합니다.
+     * key[0], key[1], ... 연속 구간 수집
      */
     private static List<String> readIndexedProperties(Environment env, String key) {
         List<String> out = new ArrayList<>();
@@ -68,7 +68,7 @@ public final class BridgeSettingsResolver {
     }
 
     /**
-     * 단일 프로퍼티를 줄바꿈 또는 쉼표로 분리해 수집합니다.
+     * 단일 프로퍼티를 줄바꿈 또는 쉼표로 분리해 수집
      */
     private static List<String> readDelimitedProperty(Environment env, String key) {
         String raw = env.getProperty(key);
@@ -87,7 +87,8 @@ public final class BridgeSettingsResolver {
     }
 
     /**
-     * "start|end" 형태를 파싱합니다. 유효하지 않으면 empty를 반환합니다.
+     * "start|end" 형태 파싱
+     * 유효하지 않으면 empty
      */
     private static Optional<CommentPattern> parseCommentPattern(String pattern) {
         if (pattern == null) {

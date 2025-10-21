@@ -30,7 +30,7 @@ public class DefaultFormatter implements Formatter {
 
     @Override
     public String format(LogContext ctx) {
-        this.sj = new StringJoiner(System.lineSeparator());
+        this.sj = new StringJoiner(System.lineSeparator()).add("");
         this.ctx = ctx;
 
         if (config.isShowSeparator()) {
@@ -72,15 +72,15 @@ public class DefaultFormatter implements Formatter {
     }
 
     private void addSqlId() {
-        sj.add("[SQL ID] " + ctx.metadata().bridgeId());
+        sj.add("[SQL ID]        - " + ctx.metadata().bridgeId());
     }
 
     private void addStartTime() {
-        sj.add("[Start Time] " + timeFormatter.format(ctx.execution().startTime()));
+        sj.add("[Start Time]    - " + timeFormatter.format(ctx.execution().startTime()));
     }
 
     private void addElapsedTime() {
-        sj.add("[Elapsed] " + ctx.execution().elapsedMillis() + " ms");
+        sj.add("[Elapsed]       - " + ctx.execution().elapsedMillis() + " ms");
     }
 
     private void addCommentLine() {
@@ -91,19 +91,19 @@ public class DefaultFormatter implements Formatter {
     }
 
     private void addRawSql() {
-        sj.add("[Raw SQL]");
+        sj.add("[Raw SQL]       - ");
         sj.add(ctx.metadata().rawSql());
     }
 
     private void addAssembledSql() {
-        sj.add("[Assembled SQL]");
+        sj.add("[Assembled SQL] - ");
         sj.add(ctx.assembly().assembledSql());
     }
 
     private void addExecutedSql() {
         String sql = ctx.execution().executedSql();
 
-        // 1) 원본 주석을 실행 SQL에 삽입(설정이 켜져 있을 때만)
+        // 원본 주석을 실행 SQL에 삽입 (설정이 켜져 있을 때만)
         if (config.isShowComment() && config.isInsertCommentIntoSql()) {
             String comment = ctx.metadata().comment();
             if (comment != null && !comment.isBlank()) {
@@ -111,15 +111,15 @@ public class DefaultFormatter implements Formatter {
             }
         }
 
-        // 2) 파라미터 바인딩: ? → 값
+        // 파라미터 바인딩: ? > 값
         sql = SqlParamBinder.bind(sql, ctx.execution().parameters());
 
-        sj.add("[Executed SQL]");
+        sj.add("[Executed SQL]  - ");
         sj.add(sql);
     }
 
     private void addParams() {
-        sj.add("[Parameters]");
+        sj.add("[Parameters]    ");
         for (ParamEntry param : ctx.execution().parameters()) {
             sj.add(" - (" + param.type() + ") " + param.value());
         }

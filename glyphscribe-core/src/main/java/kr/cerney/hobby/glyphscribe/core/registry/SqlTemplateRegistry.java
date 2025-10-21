@@ -11,18 +11,31 @@ import java.util.Optional;
  */
 public interface SqlTemplateRegistry {
 
-    /** 템플릿 등록 (bridge-id 기준) */
+    /**
+     * 템플릿 등록 (bridge-id 기준)
+     */
     void put(String bridgeId, String rawSql, String comment);
 
-    /** 템플릿 조회 */
+    /**
+     * 템플릿 조회
+     */
     Optional<SqlTemplate> get(String bridgeId);
 
-    /** 보유 여부 */
+    /**
+     * 보유 여부
+     */
     boolean contains(String bridgeId);
 
-    /** 전체 비우기 (주로 테스트/리로드용) */
+    /**
+     * 전체 비우기 (주로 테스트/리로드용)
+     */
     void clear();
 
-    /** 저장되는 템플릿 구조 */
-    record SqlTemplate(String rawSql, String comment) {}
+    /**
+     * 저장되는 템플릿 구조
+     */
+    record SqlTemplate(
+            String rawSql,
+            String comment
+    ) {}
 }

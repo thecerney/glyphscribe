@@ -4,14 +4,14 @@ import kr.cerney.hobby.glyphscribe.bridge.mybatis.BindingParameterAwareIdMapper;
 import kr.cerney.hobby.glyphscribe.bridge.mybatis.MyBatisBridgeInitializer;
 import kr.cerney.hobby.glyphscribe.bridge.mybatis.MyBatisSqlLogInterceptor;
 import kr.cerney.hobby.glyphscribe.bridge.mybatis.ShortIdIndex;
-import kr.cerney.hobby.glyphscribe.bridge.mybatis.support.BridgeProperties;
+import kr.cerney.hobby.glyphscribe.bridge.mybatis.constants.BridgeProperties;
 import kr.cerney.hobby.glyphscribe.core.api.Formatter;
 import kr.cerney.hobby.glyphscribe.core.api.IdMapper;
+import kr.cerney.hobby.glyphscribe.core.api.LogPrinter;
 import kr.cerney.hobby.glyphscribe.core.archive.LogArchive;
 import kr.cerney.hobby.glyphscribe.core.config.FormatterConfig;
 import kr.cerney.hobby.glyphscribe.core.format.CommentPattern;
 import kr.cerney.hobby.glyphscribe.core.format.DefaultFormatter;
-import kr.cerney.hobby.glyphscribe.core.output.GlyphScribeEmitter;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
@@ -35,10 +35,7 @@ import java.util.List;
  * @since 2025.08.07
  */
 @AutoConfiguration
-@EnableConfigurationProperties({
-        FormatterConfigProperties.class,
-        BridgeProperties.class
-})
+@EnableConfigurationProperties({FormatterConfigProperties.class, BridgeProperties.class})
 public class GlyphscribeAutoConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(GlyphscribeAutoConfiguration.class);
 
@@ -72,6 +69,12 @@ public class GlyphscribeAutoConfiguration {
         return new DefaultFormatter(config);
     }
 
+    @Bean(name = "logPrinter")
+    @ConditionalOnMissingBean(name = "logPrinter")
+    public LogPrinter glyphscribeLogPrinter(IdMapper idMapper, Formatter formatter, BridgeProperties bridgeProps) {
+        return new GlyphscribeLogPrinter(idMapper, formatter, bridgeProps.getLogLevel());
+    }
+
     @Bean
     public MyBatisBridgeAutoInitializer myBatisBridgeAutoInitializer(List<SqlSessionFactory> factories, ShortIdIndex shortIdIndex, Environment env) {
         return new MyBatisBridgeAutoInitializer(factories, shortIdIndex, env);
@@ -83,10 +86,6 @@ public class GlyphscribeAutoConfiguration {
     @Bean
     public SmartInitializingSingleton glyphscribeInitializer(List<SqlSessionFactory> factories, IdMapper idMapper, Formatter formatter, FormatterConfig formatterConfig, BridgeProperties bridgeProps) {
         return () -> {
-            // Logger 연결
-            GlyphScribeEmitter.setIdMapper(idMapper);
-            GlyphScribeEmitter.setFormatter(formatter);
-
             // Archive ↔ IdMapper 동기화
             LogArchive.getInstance().setEvictionListener(idMapper::evictByCoreKey);
 
@@ -104,7 +103,7 @@ public class GlyphscribeAutoConfiguration {
                     LOGGER.debug("[GlyphscribeAutoConfiguration] MyBatisSqlLogInterceptor already present: {}", already);
 
                     if (!already) {
-                        cfg.addInterceptor(new MyBatisSqlLogInterceptor(LogArchive.getInstance(), idMapper, formatter, formatterConfig));
+                        cfg.addInterceptor(new MyBatisSqlLogInterceptor(LogArchive.getInstance(), idMapper, formatter, formatterConfig, bridgeProps));
                         LOGGER.debug("[GlyphscribeAutoConfiguration] MyBatisSqlLogInterceptor added, cfg={}", cfg.getInterceptors());
                     } else {
                         LOGGER.debug("[GlyphscribeAutoConfiguration] MyBatisSqlLogInterceptor already present, skip");

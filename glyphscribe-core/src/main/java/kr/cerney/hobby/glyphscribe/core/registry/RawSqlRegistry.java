@@ -6,10 +6,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 실행 전의 원본 SQL과 주석(comment)을 저장하는 레지스트리
- * <p>
+ * <pre>
  * key: core에서 생성된 고유 식별자 (예: UUID)
  * value: raw SQL 및 주석을 담은 SqlSource 객체
- *
+ * </pre>
  * @author 손석인 (Cerney)
  * @since 2025.08.07
  */

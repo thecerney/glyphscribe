@@ -8,9 +8,8 @@ package kr.cerney.hobby.glyphscribe.core.api;
  * @since 2025.08.07
  */
 public interface LogPrinter {
-
     /**
      * 로그를 출력 문자열로 반환한다. 실패 시 메시지를 반환한다.
      */
-    String print(String bridgeId);
+    String query(String bridgeId);
 }

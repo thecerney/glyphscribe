@@ -4,6 +4,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * MyBatis xml 파일에 기록하는 id (NOT full package ID) 참조를 위한 클래스
+ *
+ * @author 손석인 (Cerney)
+ * @since 2025.08.07
+ */
 public final class ShortIdIndex {
     private final Map<String, Set<String>> index = new ConcurrentHashMap<>();
 

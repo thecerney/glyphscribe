@@ -14,19 +14,21 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
- * 실행마다 coreKey를 생성하고, bridge-id별로 최근 실행 목록을 유지한다.
- * 역매핑(coreKey->bridgeId)도 함께 유지하여 정리와 추적에 사용.
+ * 실행마다 coreKey를 생성하고, bridge-id 별로 최근 실행 목록을 유지한다.
+ * <pre>
+ * 역매핑(coreKey->bridgeId)도 함께 유지하여 정리와 추적에 사용
+ * </pre>
  *
  * @author 손석인 (Cerney)
  * @since 2025.08.07
  */
 public class BindingParameterAwareIdMapper implements IdMapper {
     private final static int MAX_KEYS_PER_BRIDGE = 100;
-    // full SQL ID → 최근 coreKey들
+    // full SQL ID -> 최근 coreKey들
     private final Map<String, Deque<String>> bridgeToCore = new ConcurrentHashMap<>();
-    // coreKey → full SQL ID
+    // coreKey -> full SQL ID
     private final Map<String, String>        coreToBridge = new ConcurrentHashMap<>();
-    // coreKey → 생성 시각(최근 비교용)
+    // coreKey -> 생성 시각(최근 비교용)
     private final Map<String, Long>          keyTime      = new ConcurrentHashMap<>();
     private final ShortIdIndex shortIndex;
 
@@ -53,7 +55,7 @@ public class BindingParameterAwareIdMapper implements IdMapper {
     }
 
     /**
-     * 풀/짧은 id 모두 허용: 가장 최근 실행 coreKey
+     * 풀/숏 id 모두 허용 (가장 최근 실행 coreKey)
      */
     @Override
     public Optional<String> getLatestKey(String anyId) {
@@ -117,7 +119,7 @@ public class BindingParameterAwareIdMapper implements IdMapper {
 
         Deque<String> dq = bridgeToCore.get(bridgeId);
         if (dq != null) {
-            dq.remove(coreKey); // O(n)지만 최근 키 중심이라 보통 작음
+            dq.remove(coreKey); // O(n)지만 최근 키 중심이라 보통 작음 - 최대치도 작아서 속도 문제 x
             if (dq.isEmpty()) {
                 bridgeToCore.remove(bridgeId);
             }

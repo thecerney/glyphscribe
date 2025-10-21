@@ -3,36 +3,29 @@ glyphscribe:
   format:
     # 쿼리 실행 직후 자동 로그 출력
     enable-auto-logging: true
-
     # 헤더/기본 포맷
     show-separator: true
     separator: "=========================================================================="
     show-sql-id: true
     show-start-time: true
     show-elapsed-time: true
-
     # SQL 본문 출력 정책
     show-comment: true
     insert-comment-into-sql: true   # 실행SQL 첫 키워드 뒤에 원본 주석 삽입
     show-raw-sql: false             # 원본(정적) SQL 블럭 출력
     show-assembled-sql: false       # 동적치환/어셈블리 SQL 블럭 출력
     show-executed-sql: true         # 실행 SQL 블럭 출력
-
     # 파라미터 블록은 미표시 (실행 SQL에 바인딩 값이 들어가므로)
     show-params: false
-
     # 시간 포맷
     timestamp-format: "yyyy-MM-dd HH:mm:ss.SSS"
 
   bridge:
-
+    log-level: INFO
+    # 수집 대상 쿼리의 pacckage
+    allowed-packages:
+      - kr.cerney.hobby
     # 원본 주석 추출 규칙 (없으면 기본 /*…*/, <!--…--> 사용)
     comment-patterns:
       - "/*|*/"
       - "<!--|-->"
-
-# ---- (참고) 로깅 레벨 조정 예시 ----
-logging:
-  level:
-    kr.cerney.hobby.glyphscribe: INFO
-    # 자동 출력이 많을 땐 DEBUG로 낮추거나, 콘솔 패턴을 간결하게 조정

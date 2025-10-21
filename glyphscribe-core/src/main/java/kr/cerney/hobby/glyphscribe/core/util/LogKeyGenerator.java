@@ -27,7 +27,7 @@ public final class LogKeyGenerator {
 
     /**
      * bridgeId 기반 해시 키 생성
-     * - 동일 bridgeId → 동일 key (예측 가능)
+     * - 동일 bridgeId > 동일 key (예측 가능)
      */
     public static String fromBridgeId(String bridgeId) {
         if (bridgeId == null || bridgeId.isBlank()) {
@@ -38,7 +38,6 @@ public final class LogKeyGenerator {
 
     /**
      * 여러 문자열 조합 기반 해시 키 생성
-     * - 예: bridgeId + timestamp 등
      */
     public static String from(String... parts) {
         StringBuilder sb = new StringBuilder();

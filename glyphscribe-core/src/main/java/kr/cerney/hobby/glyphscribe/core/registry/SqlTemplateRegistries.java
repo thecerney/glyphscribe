@@ -23,7 +23,7 @@ public final class SqlTemplateRegistries {
     }
 
     /**
-     * 네임스페이스별 레지스트리 반환(없으면 생성)
+     * 네임스페이스별 레지스트리 반환 (없으면 생성)
      */
     public static SqlTemplateRegistry get(String namespace) {
         String ns = (namespace == null || namespace.isBlank()) ? DEFAULT : namespace;
@@ -31,7 +31,7 @@ public final class SqlTemplateRegistries {
     }
 
     /**
-     * 네임스페이스에 구현 교체(예: 파일/Redis로)
+     * 네임스페이스에 구현 교체 (파일/Redis/DB 등등...)
      */
     public static void set(String namespace, SqlTemplateRegistry registry) {
         String ns = (namespace == null || namespace.isBlank()) ? DEFAULT : namespace;
@@ -48,7 +48,7 @@ public final class SqlTemplateRegistries {
     }
 
     /**
-     * 전부 초기화(테스트/재기동용)
+     * 전부 초기화
      */
     public static void clearAll() {
         REGISTRIES.values().forEach(SqlTemplateRegistry::clear);
